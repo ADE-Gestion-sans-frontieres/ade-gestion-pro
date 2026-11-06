@@ -338,18 +338,17 @@
             </div>
         </section>
 
-        <!-- FORMULAIRE DE DEVIS DIRECTEMENT RELIÉ À GMAIL (AVEC PIÈCES JOINTES) -->
+        <!-- FORMULAIRE DE DEVIS VIA WEB3FORMS (STABLE ET SÉCURISÉ) -->
         <section id="devis">
             <h3>Demande de Devis Personnalisé</h3>
-            <p style="color: #4b5563; margin-bottom: 1rem;">Remplissez le formulaire ci-dessous pour m'exposer votre besoin, où que vous soyez en France, et joignez vos documents si nécessaire.</p>
+            <p style="color: #4b5563; margin-bottom: 1rem;">Remplissez le formulaire ci-dessous pour m'exposer votre besoin, où que soyez en France, et joignez vos documents si nécessaire.</p>
             
-            <form id="devis-form" action="https://formsubmit.co/contact.ade.gsf@gmail.com" method="POST" enctype="multipart/form-data">
-                <!-- Paramètres de configuration FormSubmit -->
-                <input type="hidden" name="_subject" value="Nouvelle demande de devis - ADE Gestion Pro">
-                <input type="hidden" name="_template" value="table">
-                <input type="hidden" name="_captcha" value="false">
-                <input type="hidden" name="_next" id="next-url" value="https://ade-gestion-pro.fr/?envoye=oui#devis">
-                <input type="text" name="_honey" style="display:none">
+            <form id="devis-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
+                <!-- Clé publique Web3Forms liée directement à contact.ade.gsf@gmail.com -->
+                <input type="hidden" name="access_key" value="4f7d46c8-11b0-459d-9f5b-1c586e92b1cd">
+                <input type="hidden" name="subject" value="Nouvelle demande de devis - ADE Gestion Pro">
+                <input type="hidden" name="redirect" id="redirect-url" value="https://ade-gestion-pro.fr/?envoye=oui#devis">
+                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
                 
                 <div class="form-row">
                     <div>
@@ -425,29 +424,25 @@
         </div>
     </footer>
 
-    <!-- Script pour afficher le message de confirmation après retour de l'envoi -->
+    <!-- Script pour la gestion du retour et de l'affichage du message -->
     <script>
         const form = document.getElementById('devis-form');
         const successMessage = document.getElementById('success-message');
-        const nextUrlInput = document.getElementById('next-url');
+        const redirectUrlInput = document.getElementById('redirect-url');
         const submitBtn = document.getElementById('submit-btn');
 
-        // Configure automatiquement l'URL de retour sur la page actuelle
-        if (nextUrlInput) {
-            nextUrlInput.value = window.location.origin + window.location.pathname + '?envoye=oui#devis';
+        if (redirectUrlInput) {
+            redirectUrlInput.value = window.location.origin + window.location.pathname + '?envoye=oui#devis';
         }
 
-        // Indique l'envoi en cours lors du clic
         form.addEventListener('submit', function() {
             submitBtn.textContent = 'Envoi en cours...';
             submitBtn.style.opacity = '0.7';
         });
 
-        // Si le formulaire vient d'être envoyé, masque le formulaire et affiche le message vert
         if (window.location.search.includes('envoye=oui')) {
             form.style.display = 'none';
             successMessage.style.display = 'block';
-            // Nettoie l'URL dans la barre d'adresse
             window.history.replaceState({}, document.title, window.location.pathname + '#devis');
         }
     </script>
