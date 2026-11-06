@@ -220,6 +220,10 @@
         .btn-submit:hover {
             background-color: #2563eb;
         }
+        .btn-submit:disabled {
+            background-color: #93c5fd;
+            cursor: not-allowed;
+        }
         .success-message {
             display: none;
             background-color: #d1fae5;
@@ -338,18 +342,11 @@
             </div>
         </section>
 
-        <!-- FORMULAIRE DE DEVIS VIA WEB3FORMS (STABLE ET SÉCURISÉ) -->
         <section id="devis">
             <h3>Demande de Devis Personnalisé</h3>
-            <p style="color: #4b5563; margin-bottom: 1rem;">Remplissez le formulaire ci-dessous pour m'exposer votre besoin, où que soyez en France, et joignez vos documents si nécessaire.</p>
+            <p style="color: #4b5563; margin-bottom: 1rem;">Remplissez le formulaire ci-dessous pour m'exposer votre besoin, où que vous soyez en France, et joignez vos documents si nécessaire.</p>
             
-            <form id="devis-form" action="https://api.web3forms.com/submit" method="POST" enctype="multipart/form-data">
-                <!-- Clé publique Web3Forms liée directement à contact.ade.gsf@gmail.com -->
-                <input type="hidden" name="access_key" value="4f7d46c8-11b0-459d-9f5b-1c586e92b1cd">
-                <input type="hidden" name="subject" value="Nouvelle demande de devis - ADE Gestion Pro">
-                <input type="hidden" name="redirect" id="redirect-url" value="https://ade-gestion-pro.fr/?envoye=oui#devis">
-                <input type="checkbox" name="botcheck" class="hidden" style="display: none;">
-                
+            <form id="devis-form">
                 <div class="form-row">
                     <div>
                         <label for="nom">Nom & Prénom / Raison Sociale (SARL, SAS, Particulier...) *</label>
@@ -357,7 +354,7 @@
                     </div>
                     <div>
                         <label for="email">Adresse E-mail *</label>
-                        <input type="email" id="email" name="email" required placeholder="votre@email.com">
+                        <input type="email" id="email" name="Email" required placeholder="votre@email.com">
                     </div>
                 </div>
 
@@ -385,14 +382,13 @@
 
                 <div>
                     <label for="documents">Joindre des documents justificatifs (optionnel) :</label>
-                    <input type="file" id="documents" name="attachment" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx">
-                    <small style="color: #6b7280; font-size: 0.85rem;">Vous pouvez joindre un fichier (PDF, image, document...) qui me sera transmis directement par e-mail.</small>
+                    <input type="file" id="documents" name="Documents_Justificatifs" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx">
+                    <small style="color: #6b7280; font-size: 0.85rem;">Vous pouvez joindre un fichier (PDF, image, document...) directement avec votre demande.</small>
                 </div>
 
                 <button type="submit" id="submit-btn" class="btn-submit">Envoyer ma demande de devis</button>
             </form>
 
-            <!-- Message de confirmation élégant -->
             <div id="success-message" class="success-message">
                 ✅ Merci ! Votre demande de devis a bien été envoyée. Je vous répondrai dans les plus brefs délais.
             </div>
@@ -424,26 +420,65 @@
         </div>
     </footer>
 
-    <!-- Script pour la gestion du retour et de l'affichage du message -->
     <script>
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5LMBwtTRErqttPK-_eZf8DT-IA62b8a5s5miqJZEc7dBzy3w4X513D6aG0f2JbH3Rg/exec";
+
         const form = document.getElementById('devis-form');
         const successMessage = document.getElementById('success-message');
-        const redirectUrlInput = document.getElementById('redirect-url');
         const submitBtn = document.getElementById('submit-btn');
+        const fileInput = document.getElementById('documents');
 
-        if (redirectUrlInput) {
-            redirectUrlInput.value = window.location.origin + window.location.pathname + '?envoye=oui#devis';
-        }
-
-        form.addEventListener('submit', function() {
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            submitBtn.disabled = true;
             submitBtn.textContent = 'Envoi en cours...';
-            submitBtn.style.opacity = '0.7';
+
+            const payload = {
+                Nom_Client: document.getElementById('nom').value,
+                Email: document.getElementById('email').value,
+                Telephone: document.getElementById('telephone').value,
+                Type_Prestation: document.getElementById('type_prestation').value,
+                Situation_Et_Besoin: document.getElementById('situation').value
+            };
+
+            const file = fileInput.files[0];
+
+            if (file) {
+                const reader = new FileReader();
+                reader.onload = function(event) {
+                    payload.fileData = event.target.result.split(',')[1];
+                    payload.fileName = file.name;
+                    payload.mimeType = file.type;
+                    envoyerDonnees(payload);
+                };
+                reader.readAsDataURL(file);
+            } else {
+                envoyerDonnees(payload);
+            }
         });
 
-        if (window.location.search.includes('envoye=oui')) {
-            form.style.display = 'none';
-            successMessage.style.display = 'block';
-            window.history.replaceState({}, document.title, window.location.pathname + '#devis');
+        function envoyerDonnees(payload) {
+            fetch(GOOGLE_SCRIPT_URL, {
+                method: 'POST',
+                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.result === 'success') {
+                    form.style.display = 'none';
+                    successMessage.style.display = 'block';
+                } else {
+                    alert("Erreur lors de l'envoi : " + (data.error || "Veuillez réessayer."));
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = 'Envoyer ma demande de devis';
+                }
+            })
+            .catch(() => {
+                alert("Une erreur réseau est survenue. Veuillez réessayer.");
+                submitBtn.disabled = false;
+                submitBtn.textContent = 'Envoyer ma demande de devis';
+            });
         }
     </script>
 </body>
