@@ -338,13 +338,18 @@
             </div>
         </section>
 
-        <!-- FORMULAIRE DE DEVIS AVEC MESSAGE DE SUCCÈS INTÉGRÉ -->
+        <!-- FORMULAIRE DE DEVIS DIRECTEMENT RELIÉ À GMAIL (AVEC PIÈCES JOINTES) -->
         <section id="devis">
             <h3>Demande de Devis Personnalisé</h3>
             <p style="color: #4b5563; margin-bottom: 1rem;">Remplissez le formulaire ci-dessous pour m'exposer votre besoin, où que vous soyez en France, et joignez vos documents si nécessaire.</p>
             
-            <form id="devis-form" name="devis" method="POST" data-netlify="true" enctype="multipart/form-data">
-                <input type="hidden" name="form-name" value="devis" />
+            <form id="devis-form" action="https://formsubmit.co/contact.ade.gsf@gmail.com" method="POST" enctype="multipart/form-data">
+                <!-- Paramètres de configuration FormSubmit -->
+                <input type="hidden" name="_subject" value="Nouvelle demande de devis - ADE Gestion Pro">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" id="next-url" value="https://ade-gestion-pro.fr/?envoye=oui#devis">
+                <input type="text" name="_honey" style="display:none">
                 
                 <div class="form-row">
                     <div>
@@ -353,7 +358,7 @@
                     </div>
                     <div>
                         <label for="email">Adresse E-mail *</label>
-                        <input type="email" id="email" name="Email" required placeholder="votre@email.com">
+                        <input type="email" id="email" name="email" required placeholder="votre@email.com">
                     </div>
                 </div>
 
@@ -381,11 +386,11 @@
 
                 <div>
                     <label for="documents">Joindre des documents justificatifs (optionnel) :</label>
-                    <input type="file" id="documents" name="Documents_Justificatifs">
-                    <small style="color: #6b7280; font-size: 0.85rem;">Vous pouvez joindre un fichier (PDF, image, etc.) directement avec votre demande.</small>
+                    <input type="file" id="documents" name="attachment" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx">
+                    <small style="color: #6b7280; font-size: 0.85rem;">Vous pouvez joindre un fichier (PDF, image, document...) qui me sera transmis directement par e-mail.</small>
                 </div>
 
-                <button type="submit" class="btn-submit">Envoyer ma demande de devis</button>
+                <button type="submit" id="submit-btn" class="btn-submit">Envoyer ma demande de devis</button>
             </form>
 
             <!-- Message de confirmation élégant -->
@@ -420,37 +425,31 @@
         </div>
     </footer>
 
-    <!-- Script JavaScript CORRIGÉ pour supporter les pièces jointes -->
+    <!-- Script pour afficher le message de confirmation après retour de l'envoi -->
     <script>
         const form = document.getElementById('devis-form');
         const successMessage = document.getElementById('success-message');
+        const nextUrlInput = document.getElementById('next-url');
+        const submitBtn = document.getElementById('submit-btn');
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            const formData = new FormData(form);
+        // Configure automatiquement l'URL de retour sur la page actuelle
+        if (nextUrlInput) {
+            nextUrlInput.value = window.location.origin + window.location.pathname + '?envoye=oui#devis';
+        }
 
-            fetch('/', {
-                method: 'POST',
-                body: formData
-            })
-            .then(() => {
-                form.style.display = 'none'; // Masque le formulaire
-                successMessage.style.display = 'block'; // Affiche le message de succès
-            })
-            .catch((error) => {
-                alert('Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
-            });
+        // Indique l'envoi en cours lors du clic
+        form.addEventListener('submit', function() {
+            submitBtn.textContent = 'Envoi en cours...';
+            submitBtn.style.opacity = '0.7';
         });
-    </script>
 
-    <!-- Formulaire invisible masqué pour Netlify -->
-    <form name="devis" netlify netlify-honeypot="bot-field" hidden style="display: none;">
-        <input type="text" name="Nom_Client" />
-        <input type="email" name="Email" />
-        <input type="text" name="Telephone" />
-        <input type="text" name="Type_Prestation" />
-        <textarea name="Situation_Et_Besoin"></textarea>
-        <input type="file" name="Documents_Justificatifs" />
-    </form>
+        // Si le formulaire vient d'être envoyé, masque le formulaire et affiche le message vert
+        if (window.location.search.includes('envoye=oui')) {
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+            // Nettoie l'URL dans la barre d'adresse
+            window.history.replaceState({}, document.title, window.location.pathname + '#devis');
+        }
+    </script>
 </body>
 </html>
