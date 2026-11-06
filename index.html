@@ -220,10 +220,6 @@
         .btn-submit:hover {
             background-color: #2563eb;
         }
-        .btn-submit:disabled {
-            background-color: #93c5fd;
-            cursor: not-allowed;
-        }
         .success-message {
             display: none;
             background-color: #d1fae5;
@@ -342,11 +338,19 @@
             </div>
         </section>
 
+        <!-- FORMULAIRE DE DEVIS DIRECTEMENT RELIÉ À GMAIL (AVEC PIÈCES JOINTES) -->
         <section id="devis">
             <h3>Demande de Devis Personnalisé</h3>
             <p style="color: #4b5563; margin-bottom: 1rem;">Remplissez le formulaire ci-dessous pour m'exposer votre besoin, où que vous soyez en France, et joignez vos documents si nécessaire.</p>
             
-            <form id="devis-form">
+            <form id="devis-form" action="https://formsubmit.co/contact.ade.gsf@gmail.com" method="POST" enctype="multipart/form-data">
+                <!-- Paramètres de configuration FormSubmit -->
+                <input type="hidden" name="_subject" value="Nouvelle demande de devis - ADE Gestion Pro">
+                <input type="hidden" name="_template" value="table">
+                <input type="hidden" name="_captcha" value="false">
+                <input type="hidden" name="_next" id="next-url" value="https://ade-gestion-pro.fr/?envoye=oui#devis">
+                <input type="text" name="_honey" style="display:none">
+                
                 <div class="form-row">
                     <div>
                         <label for="nom">Nom & Prénom / Raison Sociale (SARL, SAS, Particulier...) *</label>
@@ -354,7 +358,7 @@
                     </div>
                     <div>
                         <label for="email">Adresse E-mail *</label>
-                        <input type="email" id="email" name="Email" required placeholder="votre@email.com">
+                        <input type="email" id="email" name="email" required placeholder="votre@email.com">
                     </div>
                 </div>
 
@@ -382,13 +386,14 @@
 
                 <div>
                     <label for="documents">Joindre des documents justificatifs (optionnel) :</label>
-                    <input type="file" id="documents" name="Documents_Justificatifs" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx">
-                    <small style="color: #6b7280; font-size: 0.85rem;">Vous pouvez joindre un fichier (PDF, image, document...) directement avec votre demande.</small>
+                    <input type="file" id="documents" name="attachment" accept=".pdf,.jpg,.jpeg,.png,.doc,.docx,.xls,.xlsx">
+                    <small style="color: #6b7280; font-size: 0.85rem;">Vous pouvez joindre un fichier (PDF, image, document...) qui me sera transmis directement par e-mail.</small>
                 </div>
 
                 <button type="submit" id="submit-btn" class="btn-submit">Envoyer ma demande de devis</button>
             </form>
 
+            <!-- Message de confirmation élégant -->
             <div id="success-message" class="success-message">
                 ✅ Merci ! Votre demande de devis a bien été envoyée. Je vous répondrai dans les plus brefs délais.
             </div>
@@ -420,65 +425,30 @@
         </div>
     </footer>
 
+    <!-- Script pour afficher le message de confirmation après retour de l'envoi -->
     <script>
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwh5LMBwtTRErqttPK-_eZf8DT-IA62b8a5s5miqJZEc7dBzy3w4X513D6aG0f2JbH3Rg/exec";
-
         const form = document.getElementById('devis-form');
         const successMessage = document.getElementById('success-message');
+        const nextUrlInput = document.getElementById('next-url');
         const submitBtn = document.getElementById('submit-btn');
-        const fileInput = document.getElementById('documents');
 
-        form.addEventListener('submit', function(e) {
-            e.preventDefault();
-            submitBtn.disabled = true;
+        // Configure automatiquement l'URL de retour sur la page actuelle
+        if (nextUrlInput) {
+            nextUrlInput.value = window.location.origin + window.location.pathname + '?envoye=oui#devis';
+        }
+
+        // Indique l'envoi en cours lors du clic
+        form.addEventListener('submit', function() {
             submitBtn.textContent = 'Envoi en cours...';
-
-            const payload = {
-                Nom_Client: document.getElementById('nom').value,
-                Email: document.getElementById('email').value,
-                Telephone: document.getElementById('telephone').value,
-                Type_Prestation: document.getElementById('type_prestation').value,
-                Situation_Et_Besoin: document.getElementById('situation').value
-            };
-
-            const file = fileInput.files[0];
-
-            if (file) {
-                const reader = new FileReader();
-                reader.onload = function(event) {
-                    payload.fileData = event.target.result.split(',')[1];
-                    payload.fileName = file.name;
-                    payload.mimeType = file.type;
-                    envoyerDonnees(payload);
-                };
-                reader.readAsDataURL(file);
-            } else {
-                envoyerDonnees(payload);
-            }
+            submitBtn.style.opacity = '0.7';
         });
 
-        function envoyerDonnees(payload) {
-            fetch(GOOGLE_SCRIPT_URL, {
-                method: 'POST',
-                headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-                body: JSON.stringify(payload)
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.result === 'success') {
-                    form.style.display = 'none';
-                    successMessage.style.display = 'block';
-                } else {
-                    alert("Erreur lors de l'envoi : " + (data.error || "Veuillez réessayer."));
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = 'Envoyer ma demande de devis';
-                }
-            })
-            .catch(() => {
-                alert("Une erreur réseau est survenue. Veuillez réessayer.");
-                submitBtn.disabled = false;
-                submitBtn.textContent = 'Envoyer ma demande de devis';
-            });
+        // Si le formulaire vient d'être envoyé, masque le formulaire et affiche le message vert
+        if (window.location.search.includes('envoye=oui')) {
+            form.style.display = 'none';
+            successMessage.style.display = 'block';
+            // Nettoie l'URL dans la barre d'adresse
+            window.history.replaceState({}, document.title, window.location.pathname + '#devis');
         }
     </script>
 </body>
