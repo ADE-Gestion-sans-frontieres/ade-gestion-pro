@@ -1,0 +1,456 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ADE Gestion Pro - Assistance Administrative, Sociale & Fiscale en France</title>
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: Arial, sans-serif;
+        }
+        body {
+            background-color: #0b132b;
+            color: #ffffff;
+            line-height: 1.6;
+        }
+        header {
+            background-color: #ffffff;
+            color: #222222;
+            padding: 1rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border-bottom: 1px solid #e0e0e0;
+        }
+        .brand-container {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+        .logo-box {
+            background-color: #1d3557;
+            color: white;
+            padding: 8px 12px;
+            font-weight: bold;
+            font-size: 1.2rem;
+            border-radius: 4px;
+            letter-spacing: 1px;
+        }
+        .brand-text h1 {
+            font-size: 1.1rem;
+            font-weight: bold;
+            color: #111;
+        }
+        .brand-text p {
+            font-size: 0.8rem;
+            color: #666;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+        .nav-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+        .nav-links a {
+            color: #333;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 0.95rem;
+        }
+        .nav-links a:hover {
+            color: #1d3557;
+        }
+        .hero {
+            text-align: center;
+            padding: 4rem 1rem 3rem 1rem;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .hero-tag {
+            background: linear-gradient(135deg, #1d3557, #457b9d);
+            color: white;
+            padding: 8px 20px;
+            border-radius: 20px;
+            display: inline-block;
+            font-size: 0.9rem;
+            font-weight: bold;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+        .hero h2 {
+            font-size: 2.2rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.3;
+        }
+        .hero h2 span {
+            color: #457b9d;
+        }
+        .hero p {
+            font-size: 1.05rem;
+            color: #cbd5e1;
+            margin-bottom: 2.5rem;
+        }
+        .hero-buttons {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        .btn-primary, .btn-secondary {
+            padding: 0.9rem 2rem;
+            border-radius: 30px;
+            font-weight: bold;
+            text-decoration: none;
+            font-size: 1rem;
+            transition: all 0.3s ease;
+        }
+        .btn-primary {
+            background-color: #3b82f6;
+            color: white;
+            border: none;
+        }
+        .btn-primary:hover {
+            background-color: #2563eb;
+        }
+        .btn-secondary {
+            background-color: transparent;
+            color: white;
+            border: 2px solid #cbd5e1;
+        }
+        .btn-secondary:hover {
+            background-color: rgba(255,255,255,0.1);
+        }
+        .container {
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        section {
+            background: #ffffff;
+            color: #1f2937;
+            padding: 2.5rem;
+            border-radius: 12px;
+            margin-bottom: 2rem;
+            box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+        }
+        section h3 {
+            color: #1d3557;
+            font-size: 1.6rem;
+            margin-bottom: 1rem;
+            border-bottom: 2px solid #e5e7eb;
+            padding-bottom: 0.5rem;
+        }
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+        .service-card {
+            background: #f8fafc;
+            padding: 1.5rem;
+            border-radius: 8px;
+            border-left: 4px solid #3b82f6;
+            border: 1px solid #e2e8f0;
+        }
+        .service-card h4 {
+            color: #1e3a8a;
+            margin-bottom: 0.8rem;
+            font-size: 1.1rem;
+        }
+        .service-card ul {
+            list-style-type: disc;
+            padding-left: 1.2rem;
+            font-size: 0.95rem;
+            color: #4b5563;
+        }
+        .service-card li {
+            margin-bottom: 0.5rem;
+        }
+        form {
+            display: flex;
+            flex-direction: column;
+            gap: 1.2rem;
+            margin-top: 1.5rem;
+        }
+        .form-row {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+        }
+        @media (max-width: 768px) {
+            .form-row {
+                grid-template-columns: 1fr;
+            }
+        }
+        label {
+            font-weight: bold;
+            font-size: 0.9rem;
+            color: #374151;
+            margin-bottom: 0.3rem;
+            display: block;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 0.8rem;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 1rem;
+            background: #ffffff;
+        }
+        input:focus, select:focus, textarea:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+        }
+        .btn-submit {
+            background-color: #3b82f6;
+            color: white;
+            padding: 1rem;
+            border: none;
+            border-radius: 6px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+        .btn-submit:hover {
+            background-color: #2563eb;
+        }
+        .success-message {
+            display: none;
+            background-color: #d1fae5;
+            color: #065f46;
+            border: 1px solid #a3e635;
+            padding: 1.5rem;
+            border-radius: 8px;
+            text-align: center;
+            font-size: 1.1rem;
+            font-weight: bold;
+            margin-top: 1.5rem;
+        }
+        footer {
+            text-align: center;
+            padding: 2.5rem 1rem;
+            background-color: #050b18;
+            color: #94a3b8;
+            font-size: 0.9rem;
+            border-top: 1px solid #1e293b;
+        }
+        .footer-brand {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            margin-bottom: 1rem;
+        }
+        .footer-logo {
+            background-color: #1d3557;
+            color: white;
+            padding: 6px 10px;
+            font-weight: bold;
+            font-size: 1rem;
+            border-radius: 4px;
+        }
+        .footer-info {
+            line-height: 1.8;
+            color: #cbd5e1;
+            font-size: 0.95rem;
+            margin-bottom: 1.5rem;
+        }
+        .footer-info a {
+            color: #3b82f6;
+            text-decoration: none;
+        }
+        .footer-copy {
+            font-size: 0.85rem;
+            color: #64748b;
+            border-top: 1px solid #1e293b;
+            padding-top: 1rem;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <div class="brand-container">
+            <div class="logo-box">ADE</div>
+            <div class="brand-text">
+                <h1>Gestion sans frontières</h1>
+                <p>Assistance administrative, sociale & fiscale</p>
+            </div>
+        </div>
+        <div class="nav-links">
+            <a href="#services">Prestations</a>
+            <a href="#devis">Devis</a>
+            <a href="#contact">Contact</a>
+        </div>
+    </header>
+
+    <div class="hero">
+        <div class="hero-tag">ENTREPRISES • INDÉPENDANTS • PARTICULIERS • FRONTALIERS</div>
+        <h2>Un accompagnement rigoureux pour <span>simplifier votre quotidien</span> professionnel et personnel</h2>
+        <p>Prestations d'assistance administrative, pré-comptable et RH ; aide aux formalités et aux déclarations sociales et fiscales pour particuliers, frontaliers et entreprises (partout en France).</p>
+        <div class="hero-buttons">
+            <a href="#devis" class="btn-primary">Demander un devis</a>
+            <a href="#services" class="btn-secondary">Découvrir les services</a>
+        </div>
+    </div>
+
+    <div class="container">
+        
+        <section id="services">
+            <h3>Mes Domaines d'Intervention</h3>
+            <p style="color: #4b5563; margin-bottom: 1.5rem;">Prestations d'assistance administrative, pré-comptable et RH ; aide aux formalités et aux déclarations sociales et fiscales pour particuliers, frontaliers et entreprises, assurées (partout en France) grâce à la dématérialisation des échanges.</p>
+            
+            <div class="services-grid">
+                
+                <div class="service-card">
+                    <h4>Assistance Administrative, Pré-comptable & RH</h4>
+                    <ul>
+                        <li>Aide à la facturation électronique et suivi des règlements.</li>
+                        <li>Travaux de préparation et transmission des pièces justificatives à l'expert-comptable.</li>
+                        <li>Assistance aux formalités et gestion des ressources humaines (RH).</li>
+                        <li>Suivi et traitement des dossiers administratifs courants.</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h4>Déclarations Sociales & Fiscales</h4>
+                    <ul>
+                        <li>Aide à l'établissement des déclarations de revenus.</li>
+                        <li>Assistance et accompagnement dans les formalités déclaratives et sociales.</li>
+                        <li>Vérification et constitution des dossiers administratifs et fiscaux.</li>
+                    </ul>
+                </div>
+
+                <div class="service-card">
+                    <h4>Spécial Frontaliers (Suisse / Allemagne)</h4>
+                    <ul>
+                        <li>Accompagnement et aide aux formalités pour les travailleurs frontaliers.</li>
+                        <li>Soutien dans la gestion administrative des dossiers à caractère transfrontalier.</li>
+                        <li>Conseils et démarches de proximité sur mesure.</li>
+                    </ul>
+                </div>
+
+            </div>
+        </section>
+
+        <!-- FORMULAIRE DE DEVIS AVEC MESSAGE DE SUCCÈS INTÉGRÉ -->
+        <section id="devis">
+            <h3>Demande de Devis Personnalisé</h3>
+            <p style="color: #4b5563; margin-bottom: 1rem;">Remplissez le formulaire ci-dessous pour m'exposer votre besoin, où que vous soyez en France, et joignez vos documents si nécessaire.</p>
+            
+            <form id="devis-form" name="devis" method="POST" data-netlify="true" enctype="multipart/form-data">
+                <input type="hidden" name="form-name" value="devis" />
+                
+                <div class="form-row">
+                    <div>
+                        <label for="nom">Nom & Prénom / Raison Sociale (SARL, SAS, Particulier...) *</label>
+                        <input type="text" id="nom" name="Nom_Client" required placeholder="Votre nom ou nom de structure">
+                    </div>
+                    <div>
+                        <label for="email">Adresse E-mail *</label>
+                        <input type="email" id="email" name="Email" required placeholder="votre@email.com">
+                    </div>
+                </div>
+
+                <div class="form-row">
+                    <div>
+                        <label for="telephone">Téléphone *</label>
+                        <input type="tel" id="telephone" name="Telephone" required placeholder="06 XX XX XX XX">
+                    </div>
+                    <div>
+                        <label for="type_prestation">Type de prestation souhaitée *</label>
+                        <select id="type_prestation" name="Type_Prestation" required>
+                            <option value="">-- Choisissez une option --</option>
+                            <option value="Assistance administrative / Pré-comptable / RH">Assistance administrative / Pré-comptable / RH</option>
+                            <option value="Déclarations sociales et fiscales">Déclarations sociales et fiscales</option>
+                            <option value="Accompagnement Frontalier (Suisse/Allemagne)">Accompagnement Frontalier (Suisse/Allemagne)</option>
+                            <option value="Autre formalité administrative">Autre formalité administrative</option>
+                        </select>
+                    </div>
+                </div>
+
+                <div>
+                    <label for="situation">Précisez votre situation, votre localisation et vos besoins spécifiques :</label>
+                    <textarea id="situation" name="Situation_Et_Besoin" rows="4" placeholder="Ex : Je suis basé à Bordeaux, je gère une SARL et j'ai besoin d'aide pour la pré-comptabilité..."></textarea>
+                </div>
+
+                <div>
+                    <label for="documents">Joindre des documents justificatifs (optionnel) :</label>
+                    <input type="file" id="documents" name="Documents_Justificatifs">
+                    <small style="color: #6b7280; font-size: 0.85rem;">Vous pouvez joindre un fichier (PDF, image, etc.) directement avec votre demande.</small>
+                </div>
+
+                <button type="submit" class="btn-submit">Envoyer ma demande de devis</button>
+            </form>
+
+            <!-- Message de confirmation élégant -->
+            <div id="success-message" class="success-message">
+                ✅ Merci ! Votre demande de devis a bien été envoyée. Je vous répondrai dans les plus brefs délais.
+            </div>
+        </section>
+
+        <section id="contact" style="margin-bottom: 0;">
+            <h3>Contact & Localisation</h3>
+            <p style="color: #4b5563;"><strong>ADE Gestion sans frontières</strong> - Intervention (partout en France)</p>
+            <p style="color: #4b5563;">Email : <a href="mailto:contact.ade.gsf@gmail.com" style="color: #3b82f6;">contact.ade.gsf@gmail.com</a></p>
+            <p style="color: #4b5563;">Téléphone : <a href="tel:+33618614813" style="color: #3b82f6;">+33 6 18 61 48 13</a></p>
+        </section>
+
+    </div>
+
+    <footer>
+        <div class="footer-brand">
+            <div class="footer-logo">ADE</div>
+            <span style="color: white; font-weight: bold; font-size: 1.1rem;">Gestion sans frontières</span>
+        </div>
+        <div class="footer-info">
+            EI Cristina-Adelina Cioroianu-Usceri<br>
+            SIRET : 103 389 649 00015 • Code APE : 8211Z<br>
+            N° TVA Intracommunautaire : FR13103389649<br>
+            Mulhouse, France • Entreprise assurée en RC Professionnelle (Hiscox)<br>
+            <span style="color: #94a3b8; font-size: 0.85rem;">TVA non applicable, art. 293 B du CGI</span>
+        </div>
+        <div class="footer-copy">
+            © 2026 ADE Gestion sans frontières. Tous droits réservés.
+        </div>
+    </footer>
+
+    <!-- Script JavaScript CORRIGÉ pour supporter les pièces jointes -->
+    <script>
+        const form = document.getElementById('devis-form');
+        const successMessage = document.getElementById('success-message');
+
+        form.addEventListener('submit', function(e) {
+            e.preventDefault();
+            const formData = new FormData(form);
+
+            fetch('/', {
+                method: 'POST',
+                body: formData
+            })
+            .then(() => {
+                form.style.display = 'none'; // Masque le formulaire
+                successMessage.style.display = 'block'; // Affiche le message de succès
+            })
+            .catch((error) => {
+                alert('Une erreur est survenue lors de l\'envoi. Veuillez réessayer.');
+            });
+        });
+    </script>
+
+    <!-- Formulaire invisible masqué pour Netlify -->
+    <form name="devis" netlify netlify-honeypot="bot-field" hidden style="display: none;">
+        <input type="text" name="Nom_Client" />
+        <input type="email" name="Email" />
+        <input type="text" name="Telephone" />
+        <input type="text" name="Type_Prestation" />
+        <textarea name="Situation_Et_Besoin"></textarea>
+        <input type="file" name="Documents_Justificatifs" />
+    </form>
+</body>
+</html>
