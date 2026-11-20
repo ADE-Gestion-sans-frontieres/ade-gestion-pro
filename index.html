@@ -155,6 +155,8 @@
             border-radius: 8px;
             border: 1px solid #e2e8f0;
             border-left: 4px solid #3b82f6;
+            display: flex;
+            flex-direction: column;
         }
         .service-card h4 {
             color: #1e3a8a;
@@ -166,9 +168,62 @@
             padding-left: 1.2rem;
             font-size: 0.95rem;
             color: #4b5563;
+            margin-bottom: 1.2rem;
         }
         .service-card li {
             margin-bottom: 0.5rem;
+        }
+        .card-pricing {
+            margin-top: auto;
+            padding-top: 1rem;
+            border-top: 1px solid #e2e8f0;
+        }
+        .pricing-title {
+            font-size: 0.8rem;
+            font-weight: bold;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+            color: #64748b;
+            margin-bottom: 0.6rem;
+        }
+        .price-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: baseline;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            color: #374151;
+            margin-bottom: 0.35rem;
+        }
+        .price-row:last-child {
+            margin-bottom: 0;
+        }
+        .price-value {
+            font-weight: bold;
+            color: #1d3557;
+            white-space: nowrap;
+        }
+        .pricing-note {
+            margin-top: 1.5rem;
+            padding: 1rem 1.2rem;
+            background-color: #f1f5f9;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            color: #475569;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            gap: 0.8rem;
+        }
+        .pricing-note a {
+            color: #2563eb;
+            font-weight: bold;
+            text-decoration: none;
+            white-space: nowrap;
+        }
+        .pricing-note a:hover {
+            text-decoration: underline;
         }
         form {
             display: flex;
@@ -283,7 +338,7 @@
             </div>
         </div>
         <div class="nav-links">
-            <a href="#services">Prestations</a>
+            <a href="#services">Prestations & Tarifs</a>
             <a href="#devis">Devis</a>
             <a href="#contact">Contact</a>
         </div>
@@ -302,7 +357,7 @@
     <div class="container">
         
         <section id="services">
-            <h3>Mes Domaines d'Intervention</h3>
+            <h3>Mes Domaines d'Intervention & Tarifs Indicatifs</h3>
             <p style="color: #4b5563; margin-bottom: 1.5rem;">Prestations d'assistance administrative, pré-comptable et RH ; aide aux formalités et aux déclarations sociales et fiscales pour particuliers, frontaliers et entreprises, assurées (partout en France) grâce à la dématérialisation des échanges.</p>
             
             <div class="services-grid">
@@ -315,6 +370,21 @@
                         <li>Assistance aux formalités et gestion des ressources humaines (RH).</li>
                         <li>Suivi et traitement des dossiers administratifs courants.</li>
                     </ul>
+                    <div class="card-pricing">
+                        <div class="pricing-title">Tarifs indicatifs</div>
+                        <div class="price-row">
+                            <span>À l'heure</span>
+                            <span class="price-value">38 € / h</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Pack 5 heures</span>
+                            <span class="price-value">180 €</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Forfait mensuel (4 h)</span>
+                            <span class="price-value">dès 140 € / mois</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="service-card">
@@ -324,6 +394,21 @@
                         <li>Assistance et accompagnement dans les formalités déclaratives et sociales.</li>
                         <li>Vérification et constitution des dossiers administratifs et fiscaux.</li>
                     </ul>
+                    <div class="card-pricing">
+                        <div class="pricing-title">Tarifs indicatifs</div>
+                        <div class="price-row">
+                            <span>Déclaration simple</span>
+                            <span class="price-value">dès 45 €</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Déclaration complexe</span>
+                            <span class="price-value">dès 75 €</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Dossier / formalité</span>
+                            <span class="price-value">dès 35 €</span>
+                        </div>
+                    </div>
                 </div>
 
                 <div class="service-card">
@@ -333,8 +418,28 @@
                         <li>Soutien dans la gestion administrative des dossiers à caractère transfrontalier.</li>
                         <li>Conseils et démarches de proximité sur mesure.</li>
                     </ul>
+                    <div class="card-pricing">
+                        <div class="pricing-title">Tarifs indicatifs</div>
+                        <div class="price-row">
+                            <span>Déclaration frontalière</span>
+                            <span class="price-value">dès 85 €</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Dossier transfrontalier</span>
+                            <span class="price-value">dès 60 €</span>
+                        </div>
+                        <div class="price-row">
+                            <span>Accompagnement sur mesure</span>
+                            <span class="price-value">45 € / h</span>
+                        </div>
+                    </div>
                 </div>
 
+            </div>
+
+            <div class="pricing-note">
+                <span><strong>Prix nets à payer</strong> (TVA non applicable, art. 293 B du CGI). Devis gratuit et personnalisé avant toute intervention.</span>
+                <a href="#devis">Demander un devis →</a>
             </div>
         </section>
 
